@@ -7,7 +7,6 @@ BACKGROUND_COLOR = "#B1DDC6"
 data = pandas.read_csv('data/french_words.csv')
 # print(data['French'][0])
 df = data.to_dict(orient='records')
-# print(df[0]['French'])
 current_card = {}
 
 
@@ -29,6 +28,13 @@ def flip_card():
     canvas.itemconfig(card_title, text='English', fill='white'),
     canvas.itemconfig(card_word, text=english_word, fill='white')
     
+def remove_word():
+    df.remove(current_card)
+    print(df)
+    words_2_learn = pandas.DataFrame(df)
+    words_2_learn.to_csv('data/words_to_learn.csv')
+    next_card()
+
     
 window = Tk()
 window.title('Flashy - Flashcard app')
@@ -45,7 +51,7 @@ card_word = canvas.create_text(400, 263, text='Word', font=('Ariel', 60, 'bold')
 canvas.grid(column=0, row=0, columnspan=2)
 
 r_btn_img = PhotoImage(file='images/right.png')
-right_button = Button(image=r_btn_img, highlightthickness=0, command=next_card)
+right_button = Button(image=r_btn_img, highlightthickness=0, command=remove_word)
 right_button.grid(column=1, row=1)
 
 w_btn_img = PhotoImage(file='images/wrong.png')
