@@ -4,22 +4,26 @@ import random
 
 BACKGROUND_COLOR = "#B1DDC6"
 
-data = pandas.read_csv('data/french_words.csv')
-# print(data['French'][0])
-df = data.to_dict(orient='records')
+try:
+    words_left = pandas.read_csv('data/words_to_learn.csv')
+    df = words_left.to_dict(orient='records')
+except FileNotFoundError:
+    data = pandas.read_csv('data/french_words.csv')
+    df = data.to_dict(orient='records')
 current_card = {}
-
 
 
 def next_card():
     global current_card, timer
     window.after_cancel(timer)
+
     current_card = random.choice(df)
     word = current_card['French']
     canvas.itemconfig(canvas_img, image=front_card_img)
     canvas.itemconfig(card_title, text="French", fill='black')
     canvas.itemconfig(card_word, text=word, fill='black')
     timer = window.after(3000, flip_card)
+    print(len(df))
 
 
 def flip_card():
